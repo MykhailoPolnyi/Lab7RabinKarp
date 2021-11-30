@@ -1,12 +1,21 @@
-def rabin_karp(search_text, pattern, mod=12, base=10):
+def rabin_karp(search_text, pattern, mod=17, base=10):
     def hash_string(string_to_hash):
         h = 0
         for j in range(pattern_len):
-            h += ord(string_to_hash[j])*(base**(pattern_len - j - 1))
+            h = (h*base + ord(string_to_hash[j])) % mod
         return h
 
     def rehash(string_hash, removed_letter, new_letter):
-        new_hash = string_hash - ord(removed_letter)*(base**(pattern_len-1)) + ord(new_letter)
+        first_char_coeff = 1
+        for k in range(1, pattern_len):
+            first_char_coeff *= base
+            first_char_coeff %= mod
+
+        new_hash = string_hash - (first_char_coeff * ord(removed_letter)) % mod
+        new_hash *= base
+        new_hash += ord(new_letter)
+        new_hash %= mod
+
         return new_hash
 
     search_results = []
@@ -32,12 +41,3 @@ def rabin_karp(search_text, pattern, mod=12, base=10):
             search_hash = rehash(search_hash, search_text[compare_point], search_text[compare_point+pattern_len])
 
     return search_results
-
-
-if __name__ == '__main__':
-    print(rabin_karp("Like the Naive Algorithm, Rabin-Karp algorithm also slides the pattern one by one. "
-                     "But unlike the Naive algorithm, Rabin Karp algorithm matches the hash value of the"
-                     " pattern with the hash value of current substring of text, and if the hash values "
-                     "match then only it starts matching individual characters. So Rabin Karp algorithm "
-                     "needs to calculate hash values for following strings.",
-                     "m"))

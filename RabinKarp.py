@@ -18,8 +18,11 @@ def rabin_karp(search_text, pattern, mod=17, base=10):
 
         return new_hash
 
-    search_results = []
     pattern_len = len(pattern)
+    if pattern_len == 0:
+        return []
+
+    search_results = []
     text_len = len(search_text)
     compare_point = 0
 

@@ -1,4 +1,4 @@
-def rabin_karp(search_text, pattern, mod=17, base=10):
+def rabin_karp(search_text, pattern, mod=107, base=10):
     def hash_string(string_to_hash):
         h = 0
         for j in range(pattern_len):
@@ -13,6 +13,13 @@ def rabin_karp(search_text, pattern, mod=17, base=10):
 
         return new_hash
 
+    def count_first_char_coeff():
+        counted_coef = 1
+        for k in range(1, pattern_len):
+            counted_coef *= base
+            counted_coef %= mod
+        return counted_coef
+
     pattern_len = len(pattern)
     if pattern_len == 0:
         return []
@@ -20,17 +27,12 @@ def rabin_karp(search_text, pattern, mod=17, base=10):
     search_results = []
     text_len = len(search_text)
     compare_point = 0
+    last_char_pos_to_check = text_len - pattern_len
 
     pattern_hash = hash_string(pattern)
     search_hash = hash_string(search_text[compare_point:pattern_len])
 
-    last_char_pos_to_check = text_len - pattern_len
-
-    first_char_coeff = 1
-
-    for k in range(1, pattern_len):
-        first_char_coeff *= base
-        first_char_coeff %= mod
+    first_char_coeff = count_first_char_coeff()
 
     for compare_point in range(last_char_pos_to_check + 1):
         if search_hash == pattern_hash:

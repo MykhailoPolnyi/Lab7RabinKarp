@@ -6,11 +6,6 @@ def rabin_karp(search_text, pattern, mod=17, base=10):
         return h
 
     def rehash(string_hash, removed_letter, new_letter):
-        first_char_coeff = 1
-        for k in range(1, pattern_len):
-            first_char_coeff *= base
-            first_char_coeff %= mod
-
         new_hash = string_hash - (first_char_coeff * ord(removed_letter)) % mod
         new_hash *= base
         new_hash += ord(new_letter)
@@ -30,6 +25,12 @@ def rabin_karp(search_text, pattern, mod=17, base=10):
     search_hash = hash_string(search_text[compare_point:pattern_len])
 
     last_char_pos_to_check = text_len - pattern_len
+
+    first_char_coeff = 1
+
+    for k in range(1, pattern_len):
+        first_char_coeff *= base
+        first_char_coeff %= mod
 
     for compare_point in range(last_char_pos_to_check + 1):
         if search_hash == pattern_hash:

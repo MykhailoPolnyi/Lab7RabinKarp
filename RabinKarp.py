@@ -1,8 +1,8 @@
 def rabin_karp(search_text, pattern, mod=107, base=10):
     def hash_string(string_to_hash):
         h = 0
-        for j in range(pattern_len):
-            h = (h*base + ord(string_to_hash[j])) % mod
+        for letter in string_to_hash:
+            h = (h*base + ord(letter)) % mod
         return h
 
     def rehash(string_hash, removed_letter, new_letter):
@@ -15,7 +15,7 @@ def rabin_karp(search_text, pattern, mod=107, base=10):
 
     def count_first_char_coeff():
         counted_coef = 1
-        for k in range(1, pattern_len):
+        for _ in range(1, pattern_len):
             counted_coef *= base
             counted_coef %= mod
         return counted_coef
